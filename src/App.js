@@ -3,7 +3,7 @@ import IncomeSection from "./IncomeSection";
 import ExpensesSection from "./ExpensesSection";
 import DebtTracker from "./DebtTracker";
 import SavingsGoals from "./SavingsGoals";
-import SavingsGoalCalculator from "./SavingsGoalCalculator"; // Added back the component
+import SavingsGoalCalculator from "./SavingsGoalCalculator";
 import PDFExporter from "./PDFExporter"; // Import PDFExporter
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import * as XLSX from "xlsx"; // Import xlsx library
@@ -13,7 +13,7 @@ function App() {
   const [expenses, setExpenses] = useState([]);
   const [debts, setDebts] = useState([]);
   const [savingsGoals, setSavingsGoals] = useState([]);
-  const [savingsGoalData, setSavingsGoalData] = useState({}); // Use setSavingsGoalData for handling savings goal calculations
+  const [savingsGoalData, setSavingsGoalData] = useState({});
   
   const chartRef = useRef(); // Reference for the chart section
 
@@ -60,30 +60,30 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex flex-col items-center justify-center">
-      <div className="bg-white p-8 rounded-xl shadow-lg max-w-4xl w-full">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-10">Budget Tool</h1>
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 flex flex-col items-center justify-center">
+      <div className="bg-white p-4 sm:p-8 rounded-xl shadow-lg max-w-4xl w-full">
+        <h1 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-8 sm:mb-10">Budget Tool</h1>
         
         {/* Totals section */}
-        <div className="grid grid-cols-3 gap-6 text-center mb-10">
-          <div className="bg-gray-100 p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold">Total Income</h2>
-            <p className="text-3xl text-green-600">${totalIncome}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 text-center mb-8 sm:mb-10">
+          <div className="bg-gray-100 p-4 sm:p-6 rounded-lg shadow-sm">
+            <h2 className="text-lg sm:text-xl font-semibold">Total Income</h2>
+            <p className="text-2xl sm:text-3xl text-green-600">${totalIncome}</p>
           </div>
-          <div className="bg-gray-100 p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold">Total Expenses + Debts</h2>
-            <p className="text-3xl text-red-600">${totalExpenses + totalDebts}</p>
+          <div className="bg-gray-100 p-4 sm:p-6 rounded-lg shadow-sm">
+            <h2 className="text-lg sm:text-xl font-semibold">Total Expenses + Debts</h2>
+            <p className="text-2xl sm:text-3xl text-red-600">${totalExpenses + totalDebts}</p>
           </div>
-          <div className="bg-gray-100 p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold">Net Income</h2>
-            <p className={`text-3xl ${netIncome < 0 ? "text-red-600" : "text-green-600"}`}>
+          <div className="bg-gray-100 p-4 sm:p-6 rounded-lg shadow-sm">
+            <h2 className="text-lg sm:text-xl font-semibold">Net Income</h2>
+            <p className={`text-2xl sm:text-3xl ${netIncome < 0 ? "text-red-600" : "text-green-600"}`}>
               ${netIncome}
             </p>
           </div>
         </div>
 
         {/* Sections */}
-        <div className="grid grid-cols-1 gap-8">
+        <div className="grid grid-cols-1 gap-4 sm:gap-8">
           <IncomeSection income={income} setIncome={setIncome} />
           <ExpensesSection expenses={expenses} setExpenses={setExpenses} />
           <DebtTracker debts={debts} setDebts={setDebts} />
@@ -99,14 +99,14 @@ function App() {
         />
 
         {/* Pie Chart Section */}
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md mt-10" ref={chartRef}>
-          <h2 className="text-2xl font-semibold text-center mb-6">Income vs Expenses</h2>
-          <PieChart width={400} height={400} className="mx-auto">
+        <div className="bg-gray-100 p-4 sm:p-6 rounded-lg shadow-md mt-8 sm:mt-10" ref={chartRef}>
+          <h2 className="text-xl sm:text-2xl font-semibold text-center mb-4 sm:mb-6">Income vs Expenses</h2>
+          <PieChart width={300} height={300} className="mx-auto sm:w-[400px] sm:h-[400px]">
             <Pie
               data={chartData}
               cx="50%"
               cy="50%"
-              outerRadius={150}
+              outerRadius={100}
               fill="#8884d8"
               dataKey="value"
             >
@@ -119,10 +119,10 @@ function App() {
         </div>
 
         {/* Export Buttons */}
-        <div className="flex justify-center mt-10 space-x-6">
+        <div className="flex justify-center mt-8 sm:mt-10 space-x-4 sm:space-x-6">
           <button
             onClick={exportToExcel}
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-md"
+            className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 sm:py-3 px-6 sm:px-8 rounded-full shadow-md"
           >
             Export to Excel
           </button>
