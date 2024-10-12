@@ -3,7 +3,7 @@ import IncomeSection from "./IncomeSection";
 import ExpensesSection from "./ExpensesSection";
 import DebtTracker from "./DebtTracker";
 import SavingsGoals from "./SavingsGoals";
-import SavingsGoalCalculator from "./SavingsGoalCalculator";
+import SavingsGoalCalculator from "./SavingsGoalCalculator"; // Added back the component
 import PDFExporter from "./PDFExporter"; // Import PDFExporter
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import * as XLSX from "xlsx"; // Import xlsx library
@@ -13,20 +13,20 @@ function App() {
   const [expenses, setExpenses] = useState([]);
   const [debts, setDebts] = useState([]);
   const [savingsGoals, setSavingsGoals] = useState([]);
-  const [savingsGoalData, setSavingsGoalData] = useState({});
+  const [savingsGoalData, setSavingsGoalData] = useState({}); // Use setSavingsGoalData for handling savings goal calculations
   
   const chartRef = useRef(); // Reference for the chart section
 
   // Calculate Totals
   const totalIncome = income.reduce((acc, curr) => acc + Number(curr.amount), 0);
   const totalExpenses = expenses.reduce((acc, curr) => acc + Number(curr.amount), 0);
-  const totalDebts = debts.reduce((acc, curr) => acc + Number(curr.monthlyPayment), 0);
-  const netIncome = totalIncome - totalExpenses;
+  const totalDebts = debts.reduce((acc, curr) => acc + Number(curr.monthlyPayment), 0); // Bring back totalDebts calculation
+  const netIncome = totalIncome - totalExpenses - totalDebts; // Consider debts in net income
 
   // Prepare data for the chart
   const chartData = [
     { name: "Income", value: totalIncome },
-    { name: "Expenses", value: totalExpenses }
+    { name: "Expenses", value: totalExpenses + totalDebts }, // Include debts in the chart
   ];
 
   const COLORS = ["#00C49F", "#FF8042"];
@@ -71,8 +71,8 @@ function App() {
             <p className="text-3xl text-green-600">${totalIncome}</p>
           </div>
           <div className="bg-gray-100 p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold">Total Expenses</h2>
-            <p className="text-3xl text-red-600">${totalExpenses}</p>
+            <h2 className="text-xl font-semibold">Total Expenses + Debts</h2>
+            <p className="text-3xl text-red-600">${totalExpenses + totalDebts}</p>
           </div>
           <div className="bg-gray-100 p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-semibold">Net Income</h2>
@@ -89,6 +89,14 @@ function App() {
           <DebtTracker debts={debts} setDebts={setDebts} />
           <SavingsGoals savingsGoals={savingsGoals} setSavingsGoals={setSavingsGoals} />
         </div>
+
+        {/* Savings Goal Calculator */}
+        <SavingsGoalCalculator
+          totalIncome={totalIncome}
+          totalExpenses={totalExpenses}
+          totalDebts={totalDebts} // Pass totalDebts to the calculator
+          onSaveGoalData={setSavingsGoalData} // Use setSavingsGoalData to save the result
+        />
 
         {/* Pie Chart Section */}
         <div className="bg-gray-100 p-6 rounded-lg shadow-md mt-10" ref={chartRef}>
