@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/Budget-Tool/static/css/main.43417ca9.css",
+    "main.js": "/Budget-Tool/static/js/main.d6a00919.js",
+    "static/js/213.44f5d50c.chunk.js": "/Budget-Tool/static/js/213.44f5d50c.chunk.js",
+    "static/js/732.4bc7734a.chunk.js": "/Budget-Tool/static/js/732.4bc7734a.chunk.js",
+    "index.html": "/Budget-Tool/index.html",
+    "main.43417ca9.css.map": "/Budget-Tool/static/css/main.43417ca9.css.map",
+    "main.d6a00919.js.map": "/Budget-Tool/static/js/main.d6a00919.js.map",
+    "213.44f5d50c.chunk.js.map": "/Budget-Tool/static/js/213.44f5d50c.chunk.js.map",
+    "732.4bc7734a.chunk.js.map": "/Budget-Tool/static/js/732.4bc7734a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.43417ca9.css",
+    "static/js/main.d6a00919.js"
+  ]
+}
