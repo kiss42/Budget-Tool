@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/Budget-Tool/static/css/main.2e546731.css",
-    "main.js": "/Budget-Tool/static/js/main.51b1922b.js",
+    "main.css": "/Budget-Tool/static/css/main.f2375cfe.css",
+    "main.js": "/Budget-Tool/static/js/main.5e0a5a29.js",
     "static/js/213.44f5d50c.chunk.js": "/Budget-Tool/static/js/213.44f5d50c.chunk.js",
     "static/js/732.4bc7734a.chunk.js": "/Budget-Tool/static/js/732.4bc7734a.chunk.js",
     "index.html": "/Budget-Tool/index.html",
-    "main.2e546731.css.map": "/Budget-Tool/static/css/main.2e546731.css.map",
-    "main.51b1922b.js.map": "/Budget-Tool/static/js/main.51b1922b.js.map",
+    "main.f2375cfe.css.map": "/Budget-Tool/static/css/main.f2375cfe.css.map",
+    "main.5e0a5a29.js.map": "/Budget-Tool/static/js/main.5e0a5a29.js.map",
     "213.44f5d50c.chunk.js.map": "/Budget-Tool/static/js/213.44f5d50c.chunk.js.map",
     "732.4bc7734a.chunk.js.map": "/Budget-Tool/static/js/732.4bc7734a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.2e546731.css",
-    "static/js/main.51b1922b.js"
+    "static/css/main.f2375cfe.css",
+    "static/js/main.5e0a5a29.js"
   ]
 }
