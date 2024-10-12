@@ -5,6 +5,7 @@ function SavingsGoalCalculator({ totalIncome, totalExpenses, totalDebts, onSaveG
   const [currentSavings, setCurrentSavings] = useState("");
   const [monthlyContribution, setMonthlyContribution] = useState("");
   const [goalDate, setGoalDate] = useState("");
+  const [goalFrequency, setGoalFrequency] = useState("monthly"); // New state for frequency selection
   const [monthsNeeded, setMonthsNeeded] = useState(null);
   const [neededPerMonth, setNeededPerMonth] = useState(null);
   const [neededPerDay, setNeededPerDay] = useState(null); // New state for per day calculation
@@ -20,7 +21,16 @@ function SavingsGoalCalculator({ totalIncome, totalExpenses, totalDebts, onSaveG
   // Function to calculate how many months it will take to reach the goal
   const calculateMonthsToGoal = () => {
     const remainingAmount = targetAmount - currentSavings;
-    const months = remainingAmount / monthlyContribution;
+    let adjustedContribution = monthlyContribution;
+
+    // Adjust the contribution based on the selected frequency
+    if (goalFrequency === "yearly") {
+      adjustedContribution = monthlyContribution / 12;
+    } else if (goalFrequency === "weekly") {
+      adjustedContribution = monthlyContribution * 4.33; // Approx. weeks per month
+    }
+
+    const months = remainingAmount / adjustedContribution;
     setMonthsNeeded(Math.ceil(months));
     setNeededPerMonth(null);
     setNeededPerDay(null);  // Reset the other calculations
@@ -34,7 +44,17 @@ function SavingsGoalCalculator({ totalIncome, totalExpenses, totalDebts, onSaveG
     const monthsDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24 * 30));  // Convert to months
     const remainingAmount = targetAmount - currentSavings;
     const perMonth = remainingAmount / monthsDiff;
-    setNeededPerMonth(perMonth.toFixed(2));
+
+    let adjustedPerMonth = perMonth;
+
+    // Adjust the per month calculation based on the frequency
+    if (goalFrequency === "yearly") {
+      adjustedPerMonth = perMonth * 12;
+    } else if (goalFrequency === "weekly") {
+      adjustedPerMonth = perMonth / 4.33; // Approx. weeks per month
+    }
+
+    setNeededPerMonth(adjustedPerMonth.toFixed(2));
     setMonthsNeeded(null);  // Reset the other calculations
     setNeededPerDay(null);
   };
@@ -47,7 +67,17 @@ function SavingsGoalCalculator({ totalIncome, totalExpenses, totalDebts, onSaveG
     const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert to days
     const remainingAmount = targetAmount - currentSavings;
     const perDay = remainingAmount / daysDiff;
-    setNeededPerDay(perDay.toFixed(2));
+
+    let adjustedPerDay = perDay;
+
+    // Adjust the per day calculation based on the frequency
+    if (goalFrequency === "yearly") {
+      adjustedPerDay = perDay * 365;
+    } else if (goalFrequency === "weekly") {
+      adjustedPerDay = perDay / 7;
+    }
+
+    setNeededPerDay(adjustedPerDay.toFixed(2));
     setMonthsNeeded(null);  // Reset other calculations
     setNeededPerMonth(null);
   };
@@ -62,8 +92,9 @@ function SavingsGoalCalculator({ totalIncome, totalExpenses, totalDebts, onSaveG
       monthsNeeded,
       neededPerMonth,
       neededPerDay,
+      goalFrequency,
     });
-  }, [targetAmount, currentSavings, monthlyContribution, goalDate, monthsNeeded, neededPerMonth, neededPerDay, onSaveGoalData]);
+  }, [targetAmount, currentSavings, monthlyContribution, goalDate, monthsNeeded, neededPerMonth, neededPerDay, goalFrequency, onSaveGoalData]);
 
   return (
     <div className="bg-white p-6 rounded shadow-md mt-8">
@@ -73,7 +104,7 @@ function SavingsGoalCalculator({ totalIncome, totalExpenses, totalDebts, onSaveG
         <p>You can save <strong>${averageMonthlySavings}</strong> per month based on your current income and expenses.</p>
       </div>
 
-      {/* Inputs for target amount, current savings, and monthly contribution */}
+      {/* Inputs for target amount, current savings, monthly contribution, and frequency */}
       <div className="grid grid-cols-1 gap-4 mb-4">
         <div>
           <label className="block text-sm font-medium mb-1">Goal Amount</label>
@@ -113,6 +144,18 @@ function SavingsGoalCalculator({ totalIncome, totalExpenses, totalDebts, onSaveG
             onChange={(e) => setGoalDate(e.target.value)}
             className="p-3 border rounded w-full"
           />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">Savings Frequency</label>
+          <select
+            value={goalFrequency}
+            onChange={(e) => setGoalFrequency(e.target.value)}
+            className="p-3 border rounded w-full"
+          >
+            <option value="monthly">Monthly</option>
+            <option value="weekly">Weekly</option>
+            <option value="yearly">Yearly</option>
+          </select>
         </div>
       </div>
 

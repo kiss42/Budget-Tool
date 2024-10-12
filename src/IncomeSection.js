@@ -1,19 +1,31 @@
 import React, { useState } from "react";
 
 function IncomeSection({ income, setIncome }) {
-  const [newIncome, setNewIncome] = useState({ source: "", amount: "" });
+  const [newIncome, setNewIncome] = useState({ source: "", amount: "", frequency: "monthly" });
 
   const handleAddIncome = () => {
     if (newIncome.source && newIncome.amount) {
       setIncome([...income, newIncome]);
-      setNewIncome({ source: "", amount: "" });
+      setNewIncome({ source: "", amount: "", frequency: "monthly" });
+    }
+  };
+
+  const calculateIncome = (amount, frequency) => {
+    switch (frequency) {
+      case "yearly":
+        return (amount / 12).toFixed(2); // Convert yearly to monthly
+      case "weekly":
+        return (amount * 4.33).toFixed(2); // Convert weekly to monthly
+      case "monthly":
+      default:
+        return amount;
     }
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-md">
+    <div className="bg-white p-6 rounded shadow-md mb-6">
       <h2 className="text-xl font-semibold mb-4">Income</h2>
-      <div className="flex space-x-4">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
         <input
           type="text"
           placeholder="Source"
@@ -28,19 +40,28 @@ function IncomeSection({ income, setIncome }) {
           value={newIncome.amount}
           onChange={(e) => setNewIncome({ ...newIncome, amount: e.target.value })}
         />
+        <select
+          className="p-3 border rounded w-full"
+          value={newIncome.frequency}
+          onChange={(e) => setNewIncome({ ...newIncome, frequency: e.target.value })}
+        >
+          <option value="monthly">Monthly</option>
+          <option value="weekly">Weekly</option>
+          <option value="yearly">Yearly</option>
+        </select>
         <button
-          className="bg-blue-500 text-white py-3 px-6 rounded-full shadow-md"
+          className="bg-blue-500 text-white py-3 px-6 rounded-full shadow-md w-full sm:w-auto"
           onClick={handleAddIncome}
         >
           Add Income
         </button>
       </div>
 
-      {/* Display income entries */}
       <ul className="mt-4">
         {income.map((inc, index) => (
           <li key={index} className="mt-2">
-            {inc.source}: ${inc.amount}
+            {inc.source}: ${inc.amount} ({inc.frequency}) - Monthly Equivalent: $
+            {calculateIncome(inc.amount, inc.frequency)}
           </li>
         ))}
       </ul>

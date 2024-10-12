@@ -1,42 +1,31 @@
 import React, { useState } from "react";
 
 function ExpensesSection({ expenses, setExpenses }) {
-  const [newExpense, setNewExpense] = useState({ category: "", amount: "" });
-  const [isEditing, setIsEditing] = useState(null); // Track which expense is being edited
-  const [editedExpense, setEditedExpense] = useState({ category: "", amount: "" });
+  const [newExpense, setNewExpense] = useState({ category: "", amount: "", frequency: "monthly" });
 
-  // Function to add a new expense
   const handleAddExpense = () => {
     if (newExpense.category && newExpense.amount) {
       setExpenses([...expenses, newExpense]);
-      setNewExpense({ category: "", amount: "" });
+      setNewExpense({ category: "", amount: "", frequency: "monthly" });
     }
   };
 
-  // Function to initiate editing for a specific expense
-  const handleEditExpense = (index) => {
-    setIsEditing(index); // Set the editing mode for this expense
-    setEditedExpense(expenses[index]); // Set the selected expense to be edited
-  };
-
-  // Function to save the edited expense
-  const handleSaveExpense = (index) => {
-    const updatedExpenses = [...expenses];
-    updatedExpenses[index] = editedExpense; // Update the expense at the specific index
-    setExpenses(updatedExpenses);
-    setIsEditing(null); // Exit editing mode
-  };
-
-  // Function to delete an expense
-  const handleDeleteExpense = (index) => {
-    const updatedExpenses = expenses.filter((_, i) => i !== index); // Remove the expense
-    setExpenses(updatedExpenses);
+  const calculateExpense = (amount, frequency) => {
+    switch (frequency) {
+      case "yearly":
+        return (amount / 12).toFixed(2); // Convert yearly to monthly
+      case "weekly":
+        return (amount * 4.33).toFixed(2); // Convert weekly to monthly
+      case "monthly":
+      default:
+        return amount;
+    }
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-md">
+    <div className="bg-white p-6 rounded shadow-md mb-6">
       <h2 className="text-xl font-semibold mb-4">Expenses</h2>
-      <div className="flex space-x-4">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
         <input
           type="text"
           placeholder="Category"
@@ -51,59 +40,28 @@ function ExpensesSection({ expenses, setExpenses }) {
           value={newExpense.amount}
           onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
         />
+        <select
+          className="p-3 border rounded w-full"
+          value={newExpense.frequency}
+          onChange={(e) => setNewExpense({ ...newExpense, frequency: e.target.value })}
+        >
+          <option value="monthly">Monthly</option>
+          <option value="weekly">Weekly</option>
+          <option value="yearly">Yearly</option>
+        </select>
         <button
-          className="bg-red-500 text-white py-3 px-6 rounded-full shadow-md"
+          className="bg-red-500 text-white py-3 px-6 rounded-full shadow-md w-full sm:w-auto"
           onClick={handleAddExpense}
         >
           Add Expense
         </button>
       </div>
 
-      {/* Display expense entries */}
       <ul className="mt-4">
         {expenses.map((exp, index) => (
-          <li key={index} className="mt-2 flex justify-between items-center">
-            {/* If the current expense is being edited, display input fields */}
-            {isEditing === index ? (
-              <>
-                <input
-                  type="text"
-                  value={editedExpense.category}
-                  className="p-2 border rounded"
-                  onChange={(e) => setEditedExpense({ ...editedExpense, category: e.target.value })}
-                />
-                <input
-                  type="number"
-                  value={editedExpense.amount}
-                  className="p-2 border rounded"
-                  onChange={(e) => setEditedExpense({ ...editedExpense, amount: e.target.value })}
-                />
-                <button
-                  className="bg-green-500 text-white py-1 px-4 rounded-full shadow-md ml-4"
-                  onClick={() => handleSaveExpense(index)}
-                >
-                  Save
-                </button>
-              </>
-            ) : (
-              <>
-                <span>{exp.category}: ${exp.amount}</span>
-                <div className="flex space-x-2">
-                  <button
-                    className="bg-blue-500 text-white py-1 px-4 rounded-full shadow-md"
-                    onClick={() => handleEditExpense(index)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="bg-red-500 text-white py-1 px-4 rounded-full shadow-md"
-                    onClick={() => handleDeleteExpense(index)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </>
-            )}
+          <li key={index} className="mt-2">
+            {exp.category}: ${exp.amount} ({exp.frequency}) - Monthly Equivalent: $
+            {calculateExpense(exp.amount, exp.frequency)}
           </li>
         ))}
       </ul>
