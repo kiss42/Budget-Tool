@@ -10,12 +10,15 @@ function IncomeSection({ income, setIncome }) {
     }
   };
 
+  // Helper function to calculate monthly equivalent based on frequency
   const calculateIncome = (amount, frequency) => {
     switch (frequency) {
       case "yearly":
         return (amount / 12).toFixed(2); // Convert yearly to monthly
+      case "biweekly":
+        return (amount * 2.17).toFixed(2); // Convert biweekly to monthly (26 pay periods in a year)
       case "weekly":
-        return (amount * 4.33).toFixed(2); // Convert weekly to monthly
+        return (amount * 4.33).toFixed(2); // Convert weekly to monthly (52 weeks / 12 months)
       case "monthly":
       default:
         return amount;
@@ -45,8 +48,9 @@ function IncomeSection({ income, setIncome }) {
           value={newIncome.frequency}
           onChange={(e) => setNewIncome({ ...newIncome, frequency: e.target.value })}
         >
-          <option value="monthly">Monthly</option>
           <option value="weekly">Weekly</option>
+          <option value="biweekly">Biweekly</option>
+          <option value="monthly">Monthly</option>
           <option value="yearly">Yearly</option>
         </select>
         <button
